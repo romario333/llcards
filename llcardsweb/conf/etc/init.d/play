@@ -1,0 +1,42 @@
+#!/bin/sh
+
+PLAY=/home/romario/Programs/play-1.0.3.2/play
+LLCARDSWEB=/home/romario/www/llcardsweb
+PLAY_USER=romario
+
+set -e
+
+. /lib/lsb/init-functions
+
+case "$1" in
+    start)
+    echo "Starting play..."
+        sudo -u $PLAY_USER $PLAY start $LLCARDSWEB
+        log_end_msg 0
+        ;;
+    stop)
+    echo "Stopping play..."
+        sudo -u $PLAY_USER $PLAY stop $LLCARDSWEB
+        log_end_msg 0
+        ;;
+    reload|force-reload)
+        echo "Can't do this"
+        log_end_msg 1
+        ;;
+    restart)
+    echo "Restarting play..."
+    sudo -u $PLAY_USER $PLAY stop $LLCARDSWEB
+    sudo -u $PLAY_USER $PLAY start $LLCARDSWEB
+        log_end_msg 0
+        ;;
+    status)
+        echo "Can't do this"
+        log_end_msg 1
+        ;;
+    *)
+        echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload|status}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
