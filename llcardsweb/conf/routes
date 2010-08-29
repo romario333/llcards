@@ -1,0 +1,24 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                                       Application.index
+
+# Security
+GET     /login                                  Security.login
+GET     /logout                                 Security.logout
+*       /authenticate                           Security.authenticate
+*       /authenticateWithGoogle                 Security.authenticateWithGoogle
+
+# Cards
+GET     /cards                                  Cards.index
+GET     /cards/{<[0-9]+>id}                     Cards.show
+GET     /cards/edit/{<[0-9]+>id}                Cards.edit
+GET     /cards/delete/{<[0-9]+>id}              Cards.delete
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}

@@ -1,0 +1,42 @@
+#{extends 'main.html' /}
+#{set title:'Card list' /}
+
+<h2>${card.title}</h2>
+
+    <table style="width: 100%;">
+    <colgroup>
+        <col style="width: 20%" />
+        <col  />
+    </colgroup>
+    <tbody>
+      <tr>
+        <td style="text-align: left">
+            #{if card.previous()}
+                <a href="@{Cards.show(card.previous().id)}">Previous</a>
+            #{/if}
+        </td>
+        <td style="text-align: right;">
+            #{if card.next()}
+                <a href="@{Cards.show(card.next().id)}">Next</a>
+            #{/if}
+        </td>
+      </tr>
+    #{list items:card.items, as:'item'}
+      <tr>
+        <td style="vertical-align: top; text-transform:uppercase; font-size: smaller;">
+            <label id="itemLabel">${item.itemType.name}</label>
+        </td>
+        <td style="vertical-align: top;">
+            ${item.content.textile().raw()}
+        </td>
+      </tr>
+    #{/list}
+    </tbody>
+    </table>
+    
+    <p>
+        <a href="@{Cards.edit(card.id)}">Edit</a>
+        <a href="@{Cards.delete(card.id)}">Delete</a>
+    </p>
+
+</table>

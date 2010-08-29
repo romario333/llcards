@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>#{get 'title' /}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
+		<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/redmond/jquery-ui.css" rel="stylesheet" />   
+        #{get 'moreStyles' /}
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+	    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+	    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>     
+        #{get 'moreScripts' /}
+    </head>
+    <body>
+		<div class="page">
+	
+	    <div id="header">
+	        <div id="title">
+	            <h1>llcards prototype</h1>
+	        </div>
+	          
+	        <div id="logindisplay">
+	            #{if user == null}
+	               [ <a href="@{Security.login()}">Login</a> ]
+	            #{/if}
+                #{else}
+                   ${user.nickname} [ <a href="@{Security.logout()}">Logout</a> ]
+                #{/else}
+	        </div> 
+	        
+	        <div id="menucontainer">
+	        
+	            <ul id="menu">              
+	                <li><a href="@{Application.index()}">Home</a></li>
+	                <li><a href="@{Cards.index()}">Cards</a></li>
+	                <li><a>About</a></li>
+	            </ul>
+	        
+	        </div>
+	    </div>
+	
+	    <div id="main">
+
+            #{if flash.success}
+                <div class="flash ui-state-highlight ui-corner-all"> 
+	               <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+	               ${flash.success}
+                </div> 
+            #{/if}
+
+	    
+	        #{if flash.error}
+                <div class="flash ui-state-error ui-corner-all"> 
+                    <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+                    ${flash.error} 
+                </div> 
+			#{/if}
+			
+	        #{doLayout /}
+	
+	        <div id="footer">
+	        </div>
+	    </div>
+	</div>
+  </body>
+</html>

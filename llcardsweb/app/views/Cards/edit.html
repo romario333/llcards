@@ -1,0 +1,137 @@
+#{extends 'main.html' /}
+#{set title:'Card list' /}
+
+#{set 'moreStyles'}
+    <style type="text/css">
+    #toolbar {
+        padding: 10px 4px;
+    }
+    
+    .cardItem {
+        background-color: #e4f1fc;
+        vertical-align: middle;
+    }
+    </style>
+#{/set}
+
+#{set 'moreScripts'}
+		<script type="text/javascript">
+	    $(function() {
+            // FIXME: keep width of table cells when sorting
+            var fixHelper = function(e, ui) {
+                ui.children().each(function() {
+                    $(this).width($(this).width());
+                });
+                return ui;
+            };
+	        
+	        $('#items tbody').sortable({ axis: 'y', helper: fixHelper }).disableSelection();
+	        
+	        
+	        $('.addItem').button().click(function() {addItem($(this).attr('itemType'), $(this).text()); return false; });
+	        $('#addExample').button();
+	        
+	        $('.removeItem').button({text: false, icons: {primary: 'ui-icon-circle-close'}})
+	           .click(function() 
+	           {
+	               $(this).parent().parent().remove();
+	               return false; 
+	           });
+	        
+	        function addItem(itemType, itemTypeName) {
+	           var newItem = $('#itemPrototype').clone();
+	           newItem.find('#itemType').val(itemType);
+	           newItem.find('#itemLabel').text(itemTypeName);
+	           
+	           
+               // TODO: fuj, duplikuju 
+               newItem.find('.removeItem').button({text: false, icons: {primary: 'ui-icon-circle-close'}})
+               .click(function() 
+               {
+                   $(this).parent().parent().remove();
+                   return false; 
+               });
+               
+               newItem.appendTo('#items tbody').css('display', 'table-row');
+               newItem.find('#itemContent').focus();
+               	           
+	        }
+	    });
+	</script>
+#{/set}
+
+#{form @Cards.save()}
+
+    <input type="hidden" name="card.id" id="card.id" value="${card.id}" />
+    
+	#{field 'card.title'}
+	<p>
+	  <label>&{field.name}</label>
+	  <input type="text" id="${field.id}" name="${field.name}" value="${field.value}" class="${field.errorClass}">
+	  <span class="error">${field.error}</span>
+	</p>
+	#{/}
+
+    <table id="items" style="width: 100%;">
+    <colgroup>
+        <col style="width: 20%" />
+        <col  />
+        <col style="width: 5%;" />
+    </colgroup>
+    <tbody>
+      <!-- prototype row - new items are created from this row -->
+      <tr id="itemPrototype" style="display: none;">
+        
+        #{field 'itemType'}
+        <td style="vertical-align: top; text-transform:uppercase; font-size: smaller;">
+	        <input type="hidden" id="${field.id}" name="${field.name}" value="" style="width: 100%;" />
+            <label id="itemLabel"></label>
+        </td>
+        #{/field}
+        #{field 'itemContent'}
+        <td style="vertical-align: middle;">
+            <textarea id="${field.id}" name="${field.name}" rows="4" cols="60"></textarea>
+        </td>
+        <td style="vertical-align: middle;">
+            <button class="removeItem" style="vertical-align: middle;">Remove</button>
+        </td>
+        #{/field}
+      </tr>
+      
+    #{list items:cardItems, as:'item'}
+      <tr>
+        
+        #{field 'itemType'}
+        <td style="vertical-align: top; text-transform:uppercase; font-size: smaller;">
+            <input type="hidden" id="${field.id}" name="${field.name}" value="${item.itemType}" />
+            <label id="itemLabel">${item.itemType.name}</label>
+        </td>
+        #{/field}
+        #{field 'itemContent'}
+        <td style="vertical-align: middle;">
+            <textarea id="${field.id}" name="${field.name}" rows="4" cols="60">${item.content}</textarea>
+        </td>
+        <td style="vertical-align: middle;">
+            <button class="removeItem" style="vertical-align: middle;">Remove</button>
+        </td>
+        #{/field}
+      </tr>
+    #{/list}
+    </tbody>
+    </table>
+		
+    <p style="font-size: smaller;">
+        <span id="toolbar" class="ui-widget-header ui-corner-all">
+            <label>Add</label>
+            #{list items:cardItemTypes, as:'itemType'}
+	            <button class="addItem" itemType="${itemType}">${itemType.name}</button>
+            #{/list}
+        </span>
+    </p>
+
+    <p>
+        <input type="submit" value="Save">
+    </p>
+
+#{/form}
+

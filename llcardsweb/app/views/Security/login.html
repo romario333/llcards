@@ -1,0 +1,18 @@
+#{extends 'main.html' /}
+#{set title:'Login' /}
+
+#{if flash.error}
+<h1>${flash.error}</h1>
+#{/if}
+ 
+<form action="@{Security.authenticate()}" method="POST">
+    <p>
+	    <label for="user">What's your OpenID?</label>
+	    <input type="text" name="user" id="user" />
+	    <input type="submit" value="login..." />
+    </p>
+    
+    <p>
+        <a href="@{Security.authenticateWithGoogle()}">Login with Google Account</a>
+    </p>
+</form>

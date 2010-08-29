@@ -1,0 +1,27 @@
+LocalUser(bob):
+  openId: bob@gmail.com
+  nickname: bob
+
+LocalUser(jeff):
+  openId: jef@gmail.com
+  nickname: jeff
+
+Card(firstBobCard):
+  user: bob
+  title: Bob's card 1
+  created: 2010-07-18
+  modified: 2010-07-18
+
+CardItem(item1):
+  card: firstBobCard
+  itemType: DEFINITION
+  itemOrder: 0
+  content: >
+           halo halo
+           husto malo
+CardItem(item2):
+  card: firstBobCard
+  itemType: EXAMPLES
+  itemOrder: 1
+  content: >
+           buuu muuu
