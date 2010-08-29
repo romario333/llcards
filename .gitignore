@@ -1,5 +1,6 @@
-test-results/
-tmp/
-logs/
-eclipse/
+/llcardsweb/test-results/
+/llcardsweb/tmp/
+/llcardsweb/logs/
+/llcardsweb/eclipse/
+/llcardsweb/.classpath
 
