@@ -24,7 +24,7 @@
     #{list items:card.items, as:'item'}
       <tr>
         <td style="vertical-align: top; text-transform:uppercase; font-size: smaller;">
-            <label id="itemLabel">${item.itemType.name}</label>
+            <label id="itemLabel">${card.getItemTypeName(item)}</label>
         </td>
         <td style="vertical-align: top;">
             ${item.content.textile().raw()}
@@ -33,6 +33,12 @@
     #{/list}
     </tbody>
     </table>
+    
+    <p>
+        #{list items:card.tags, as:'tag'}
+            <a href="@{Cards.listByTag(tag.name)}">[ ${tag.name} ]</a>
+        #{/list}
+    </p>
     
     <p>
         <a href="@{Cards.edit(card.id)}">Edit</a>

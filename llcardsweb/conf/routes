@@ -16,6 +16,7 @@ GET     /cards                                  Cards.index
 GET     /cards/{<[0-9]+>id}                     Cards.show
 GET     /cards/edit/{<[0-9]+>id}                Cards.edit
 GET     /cards/delete/{<[0-9]+>id}              Cards.delete
+GET     /cards/tagged/{tagName}                     Cards.listByTag
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public

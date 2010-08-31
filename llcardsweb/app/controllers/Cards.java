@@ -26,6 +26,7 @@ import models.Card;
 import models.CardItem;
 import models.CardItemType;
 import models.LocalUser;
+import models.Tag;
 import play.data.validation.Valid;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -45,6 +46,12 @@ public class Cards extends Controller {
 		// TODO: debug
 		List<Card> cards = Card.all().fetch();
 		render(cards);
+	}
+	
+	public static void listByTag(String tagName) {
+		Tag tag = Tag.getInstance(Security.getUser(), tagName, true);
+		List<Card> cards = Card.find("select c from Card c inner join c.tags t where t = ?", tag).fetch();
+		render("Cards/list.html", cards, tag);
 	}
 	
 	public static void show(Long id) {
@@ -181,7 +188,9 @@ public class Cards extends Controller {
 		if (examples != "") {
 			card.addItem(new CardItem(CardItemType.EXAMPLES, examples));
 		}
-
+		
+		card.addTag("Level " + level);
+		
 		card.save();
 	}
 	

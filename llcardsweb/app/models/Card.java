@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -31,7 +32,7 @@ public class Card extends Model {
 	@OneToMany(mappedBy="card", cascade=CascadeType.ALL)
 	public List<CardItem> items = new ArrayList<CardItem>();
 	
-	@OneToMany()
+	@ManyToMany
 	public Set<Tag> tags = new HashSet<Tag>();
 	
 	public Card(LocalUser user) {
@@ -73,13 +74,44 @@ public class Card extends Model {
 		}
 	}
 	
+	public void addTag(String name) {
+		Tag tag = Tag.getInstance(user, name, false);
+		tags.add(tag);
+	}
+	
+	public void removeTag(String name) {
+		Tag tag = Tag.getInstance(user, name, false);
+		tags.remove(tag);
+	}
+	
+	public String getItemTypeName(CardItem item) {
+		if (item.itemType == CardItemType.DEFINITION) {
+			int definitionCount = 0, definitionRank = 0;
+			for (CardItem i : items) {
+				if (i.itemType == CardItemType.DEFINITION)
+					definitionCount++;
+					
+				if (i == item)
+					definitionRank = definitionCount;
+			}
+			
+			if (definitionCount > 1)
+				return String.format("%s (%s)", item.itemType.getName(), definitionRank);
+			else
+				return item.itemType.getName();
+		} else {
+			return item.itemType.getName();
+		}
+	}
+	
+
 	// TODO: tezce neoptimalni
 	public Card next() {
 		// TODO: debug
 		List<Card> cards = Card.all().fetch();
 		for (int i = 0; i < cards.size(); i++) {
 			if (cards.get(i).id.equals(id)) {
-				if (i < cards.size())
+				if (i+1 < cards.size())
 					return cards.get(i+1);
 			}
 		}

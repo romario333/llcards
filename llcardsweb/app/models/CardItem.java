@@ -19,5 +19,4 @@ public class CardItem extends Model {
 		this.itemType = itemType;
 		this.content = content;
 	}
-	
 }

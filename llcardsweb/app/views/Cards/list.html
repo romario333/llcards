@@ -1,13 +1,17 @@
 #{extends 'main.html' /}
 #{set title:'Card list' /}
 
-<h2>Seznam kartaku</h2>
-
+#{if tag}
+<h2>Cards tagged with "${tag.name}"</h2>
+#{/if}
+#{else}
+<h2>Cards</h2>
+#{/else}
 <p>
     <a href="@{Cards.create()}">Add new</a>
 </p>
 
-<table>
+<table style="width: 100%;">
 #{list items:cards, as:'card'}
     <tr>
         <td><a href="@{Cards.show(card.id)}">${card.title}</td>
@@ -17,6 +21,8 @@
 #{/list}
 </table>
 
+<hr/>
+
 <p>
     <a href="@{Cards.importCards()}">Import from Cobocards</a>
 </p>
@@ -24,10 +30,3 @@
     <a href="@{Cards.deleteAll}">Delete all cards</a>
 </p>
 
-
-<p>
-    TODO:
-    <ul>
-        <li>confirm dialog na delete</li>
-    </ul>
-</p>
