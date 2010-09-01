@@ -12,13 +12,28 @@
 </p>
 
 <table style="width: 100%;">
+    <thead>
+        <tr>
+            <th>Card</th>
+            <th>Word Frequency<br/>(#rank / count)</th>
+            <th colspan="2">
+        </tr>
+    </thead>
+    <tbody>
+
 #{list items:cards, as:'card'}
     <tr>
         <td><a href="@{Cards.show(card.id)}">${card.title}</td>
+        <td>
+            #{if card.wordFrequency}
+                #${card.wordFrequency?.wordRank} / ${card.wordFrequency?.wordCount}
+            #{/if}
+        </td>
         <td><a href="@{Cards.edit(card.id)}">edit</td>
         <td><a href="@{Cards.delete(card.id)}">delete</td>
     </tr>
 #{/list}
+   </tbody>
 </table>
 
 <hr/>

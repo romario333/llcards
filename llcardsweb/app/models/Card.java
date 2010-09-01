@@ -35,6 +35,9 @@ public class Card extends Model {
 	@ManyToMany
 	public Set<Tag> tags = new HashSet<Tag>();
 	
+	@ManyToOne(optional=true)
+	public WordFrequency wordFrequency;
+	
 	public Card(LocalUser user) {
 		this(user, "");
 	}
@@ -52,9 +55,12 @@ public class Card extends Model {
 	}
 	
 	void deleteItems() {
-		while (items.size() != 0) {
-			CardItem item = items.remove(0);
-			item.delete();
+		// TODO: jaktoze je null kdyz vytvarim novy zaznam??
+		if (items != null) {
+			while (items.size() != 0) {
+				CardItem item = items.remove(0);
+				item.delete();
+			}
 		}
 	}
 	
@@ -138,6 +144,9 @@ public class Card extends Model {
 				item.itemOrder = order++;
 			}
 		}
+		
+		// TODO: tohle asi nebude nejstastnejsi misto
+		wordFrequency = WordFrequency.find("word = ?", title.trim()).first();
 		
 		return super.save();
 	}

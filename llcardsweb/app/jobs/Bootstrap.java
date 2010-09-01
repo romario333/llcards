@@ -10,8 +10,8 @@ public class Bootstrap extends Job {
 
 	@Override
 	public void doJob() throws Exception {
-		if (LocalUser.count() == 0) {
-			Fixtures.load("initial-data.yml");
-		}
+//		if (LocalUser.count() == 0) {
+//			Fixtures.load("initial-data.yml");
+//		}
 	}
 }

@@ -1,0 +1,7 @@
+#{extends 'main.html' /}
+#{set title:'Import cards' /}
+
+<form action="@{Admin.uploadWordsFrequencies()}" method="POST" enctype="multipart/form-data">
+    <input type="file" id="wordsFile" name="wordsFile" />
+    <input type="submit" value="Import word frequencies" />
+</form>
