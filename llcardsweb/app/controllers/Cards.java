@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
 import models.Card;
 import models.CardItem;
 import models.CardItemType;
+import models.Language;
 import models.LocalUser;
 import models.Tag;
 import play.data.validation.Valid;
@@ -42,14 +43,14 @@ public class Cards extends Controller {
 	public static void list() {
 		// TODO: strankovani
 		LocalUser user = AuthenticationRequired.getUser();
-		//List<Card> cards = Card.find("byUser", user).fetch();
-		// TODO: debug
-		List<Card> cards = Card.all().fetch();
+		List<Card> cards = Card.getCards(user);
+		
 		render(cards);
 	}
 	
 	public static void listByTag(String tagName) {
-		Tag tag = Tag.getInstance(Security.getUser(), tagName, true);
+		// TODO: Tag.TAG_GROUP_EMPTY
+		Tag tag = Tag.getInstance(Security.getUser(), Tag.TAG_GROUP_EMPTY, tagName, true);
 		List<Card> cards = Card.find("select c from Card c inner join c.tags t where t = ?", tag).fetch();
 		render("Cards/list.html", cards, tag);
 	}

@@ -18,7 +18,7 @@ public class TagTest extends UnitTest {
     @Test
     public void createTag() {
 		LocalUser user = new LocalUser("openId", "nickname", "mail").save();
-    	Tag tag = new Tag(user, "tag1", true).save();
+    	Tag tag = new Tag(user, Tag.TAG_GROUP_EMPTY, "tag1", true).save();
     	assertEquals(1, Tag.count());
     	
     	tag = Tag.all().first();
@@ -29,14 +29,14 @@ public class TagTest extends UnitTest {
     
     @Test
     public void createTag_nullUser_cannotBeCreated() {
-    	new Tag(null, "tag1", false);
+    	new Tag(null, Tag.TAG_GROUP_EMPTY, "tag1", false);
     	fail();
     }
     
     @Test
     public void cardRelation() {
 		LocalUser user = new LocalUser("openId", "nickname", "mail").save();
-    	Tag tag = new Tag(user, "tag1", true).save();
+    	Tag tag = new Tag(user, Tag.TAG_GROUP_EMPTY, "tag1", true).save();
 		Card card = new Card(user, "card").save();
 		
 		card.tags.add(tag);
@@ -44,7 +44,7 @@ public class TagTest extends UnitTest {
     	
 		card = Card.all().first();
 		assertEquals(1, card.tags.size());
-		assertTrue(card.tags.contains(new Tag(user, "tag1", true)));
+		assertTrue(card.tags.contains(new Tag(user, Tag.TAG_GROUP_EMPTY, "tag1", true)));
     }
     
     // TODO: testy pro equals
@@ -57,16 +57,16 @@ public class TagTest extends UnitTest {
 		Tag tag;
 		assertEquals(0, Tag.count());
 		// new row in db
-		tag = Tag.getInstance(user1, "tag1", true);
+		tag = Tag.getInstance(user1, Tag.TAG_GROUP_EMPTY, "tag1", true);
 		assertEquals(1, Tag.count());
 		// different tag name -> new row in db
-		tag = Tag.getInstance(user1, "tag2", true);
+		tag = Tag.getInstance(user1, Tag.TAG_GROUP_EMPTY, "tag2", true);
 		assertEquals(2, Tag.count());
 		// different user -> new row in db
-		tag = Tag.getInstance(user2, "tag2", true);
+		tag = Tag.getInstance(user2, Tag.TAG_GROUP_EMPTY, "tag2", true);
 		assertEquals(3, Tag.count());
 		// already stored combination, nothing changes
-		tag = Tag.getInstance(user1, "tag2", true);
+		tag = Tag.getInstance(user1, Tag.TAG_GROUP_EMPTY, "tag2", true);
 		assertEquals(3, Tag.count());
     }
 

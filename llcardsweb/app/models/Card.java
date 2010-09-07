@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cascade;
 
@@ -26,6 +27,9 @@ public class Card extends Model {
 	public Date created;
 	public Date modified;
 	
+	// TODO: vyplatilo by se mit pro tohle vlastni tabulku?
+	public Date lastLearned;
+	
 	@ManyToOne
 	public LocalUser user;
 	
@@ -37,6 +41,9 @@ public class Card extends Model {
 	
 	@ManyToOne(optional=true)
 	public WordFrequency wordFrequency;
+	
+	@ManyToOne
+	public Language language;
 	
 	public Card(LocalUser user) {
 		this(user, "");
@@ -81,12 +88,12 @@ public class Card extends Model {
 	}
 	
 	public void addTag(String name) {
-		Tag tag = Tag.getInstance(user, name, false);
+		Tag tag = Tag.getInstance(user, Tag.TAG_GROUP_EMPTY, name, false);
 		tags.add(tag);
 	}
 	
 	public void removeTag(String name) {
-		Tag tag = Tag.getInstance(user, name, false);
+		Tag tag = Tag.getInstance(user, Tag.TAG_GROUP_EMPTY, name, false);
 		tags.remove(tag);
 	}
 	
@@ -110,7 +117,10 @@ public class Card extends Model {
 		}
 	}
 	
-
+	public static List<Card> getCards(LocalUser user) {
+		return Card.find("user = ?", user).fetch();
+	}
+	
 	// TODO: tezce neoptimalni
 	public Card next() {
 		// TODO: debug
